@@ -3,7 +3,24 @@ const hamburger = document.querySelector('.hamburger');
 const navLinks = document.querySelector('.nav-links');
 const header = document.querySelector('header');
 const navItems = document.querySelectorAll('.nav-links li a');
-const form = document.querySelector('.contact-form form');
+const form = document.querySelector('#contactForm');
+
+// Email form submission function
+function submitForm(event) {
+    event.preventDefault();
+    
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+    
+    // Create mailto link with form data
+    const mailtoLink = `mailto:danielugoali@gmail.com?subject=Portfolio Contact from ${name}&body=Name: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0AMessage:%0D%0A${encodeURIComponent(message)}`;
+    
+    // Open the email client
+    window.location.href = mailtoLink;
+    
+    return false;
+}
 
 // Mobile Navigation Toggle
 hamburger.addEventListener('click', () => {

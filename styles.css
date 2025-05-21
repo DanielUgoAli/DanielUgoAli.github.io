@@ -481,15 +481,13 @@ nav {
 
 /* Social Media Brand Colors */
 .social-links a:nth-child(1) {
-    background-color: #333;  /* GitHub */
+    background-color: white;  /* GitHub */
+    color: #333;  /* Dark text for contrast */
 }
 .social-links a:nth-child(2) {
-    background-color: #0077b5;  /* LinkedIn */
+    background-color: #000000;  /* X (formerly Twitter) */
 }
 .social-links a:nth-child(3) {
-    background-color: #1DA1F2;  /* Twitter */
-}
-.social-links a:nth-child(4) {
     background-color: #E4405F;  /* Instagram */
 }
 
@@ -524,13 +522,24 @@ nav {
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(94, 53, 177, 0.2);
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(0, 150, 136, 0.2);
 }
 
 .form-group textarea {
     height: 150px;
     resize: vertical;
+}
+
+.contact-form button {
+    width: 100%;
+    margin-top: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.contact-form button:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-3px);
 }
 
 /* Footer */
