@@ -267,6 +267,8 @@ body.dark-theme .toggle-ball {
     position: absolute;
     right: -5px;
     width: 2px;
+    /* height: 100%;
+    background-color: var(--primary-color); */
     animation: blink 0.7s infinite;
 }
 

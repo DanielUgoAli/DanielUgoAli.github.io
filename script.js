@@ -4,6 +4,55 @@ const navLinks = document.querySelector('.nav-links');
 const header = document.querySelector('header');
 const navItems = document.querySelectorAll('.nav-links li a');
 const form = document.querySelector('.contact-form form');
+const highlightText = document.querySelector('.highlight');
+const themeToggle = document.querySelector('.theme-toggle');
+
+// Dark Mode Toggle
+function initThemeToggle() {
+    if (themeToggle) {
+        // Check for saved theme preference or use device preference
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const savedTheme = localStorage.getItem('theme');
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDarkScheme.matches)) {
+            document.body.classList.add('dark-theme');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            
+            // Save theme preference
+            if (document.body.classList.contains('dark-theme')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    }
+}
+
+// Typing Animation
+function initTypingAnimation() {
+    if (!highlightText) return;
+    
+    const originalText = highlightText.textContent;
+    highlightText.textContent = '';
+    highlightText.classList.add('typing-animation');
+    
+    let charIndex = 0;
+    const typingSpeed = 100; // milliseconds per character
+    
+    function typeText() {
+        if (charIndex < originalText.length) {
+            highlightText.textContent += originalText.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeText, typingSpeed);
+        }
+    }
+    
+    // Start typing animation after a short delay
+    setTimeout(typeText, 500);
+}
 
 // Mobile Navigation Toggle
 hamburger.addEventListener('click', () => {
@@ -69,40 +118,35 @@ if (form) {
     });
 }
 
-// Animation on Scroll
-document.addEventListener('DOMContentLoaded', () => {
-    // Add animation classes to elements when they come into view
-    const animateOnScroll = () => {
-        const elements = document.querySelectorAll('.section-title, .about-image, .about-text, .project-card, .contact-item, .contact-form');
-        
-        elements.forEach(element => {
-            const elementPosition = element.getBoundingClientRect().top;
-            const screenPosition = window.innerHeight / 1.3;
-            
-            if (elementPosition < screenPosition) {
-                element.style.opacity = '1';
-                element.style.transform = 'translateY(0)';
-            }
-        });
-    };
+// Animation on Scroll Functions
+// Add animation classes to elements when they come into view
+const animateOnScroll = () => {
+    const elements = document.querySelectorAll('.section-title, .about-image, .about-text, .project-card, .contact-item, .contact-form');
     
-    // Initial setup for animations
-    const setupAnimations = () => {
-        const elements = document.querySelectorAll('.section-title, .about-image, .about-text, .project-card, .contact-item, .contact-form');
+    elements.forEach(element => {
+        const elementPosition = element.getBoundingClientRect().top;
+        const screenPosition = window.innerHeight / 1.3;
         
-        elements.forEach(element => {
-            element.style.opacity = '0';
-            element.style.transform = 'translateY(20px)';
-            element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        });
-        
-        // Trigger animations for elements in viewport on load
-        animateOnScroll();
-    };
+        if (elementPosition < screenPosition) {
+            element.style.opacity = '1';
+            element.style.transform = 'translateY(0)';
+        }
+    });
+};
+
+// Initial setup for animations
+const setupAnimations = () => {
+    const elements = document.querySelectorAll('.section-title, .about-image, .about-text, .project-card, .contact-item, .contact-form');
     
-    setupAnimations();
-    window.addEventListener('scroll', animateOnScroll);
-});
+    elements.forEach(element => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(20px)';
+        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    });
+    
+    // Trigger animations for elements in viewport on load
+    animateOnScroll();
+};
 
 // Typed.js effect for the hero section (if using the library)
 // You can uncomment this if you add the Typed.js library to your project
@@ -131,4 +175,14 @@ projectCards.forEach(card => {
             }
         });
     }, { passive: true });
+});
+
+// Initialize all functionality when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initThemeToggle();
+    initTypingAnimation();
+    setupAnimations();
+    
+    // Trigger animations on scroll
+    window.addEventListener('scroll', animateOnScroll);
 });
