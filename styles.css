@@ -270,6 +270,35 @@ body.dark-theme .toggle-ball {
     animation: blink 0.7s infinite;
 }
 
+/* University Link Styles */
+.university-link {
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.university-link:hover {
+    opacity: 0.8;
+}
+
+.permanent-highlight {
+    position: relative;
+    padding: 0 2px;
+    font-weight: 500;
+}
+
+.blue-highlight {
+    color: #4a86e8;
+    background-color: rgba(74, 134, 232, 0.1);
+    border-bottom: 2px solid #4a86e8;
+}
+
+/* Dark mode overrides for university link */
+body.dark-theme .blue-highlight {
+    color: #7fa7f4;
+    background-color: rgba(74, 134, 232, 0.15);
+    border-bottom: 2px solid #7fa7f4;
+}
+
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
