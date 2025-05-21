@@ -330,7 +330,7 @@ body.dark-theme .blue-highlight {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
-    align-items: center;
+    align-items: start; /* Changed from center to start to allow natural height */
 }
 
 .about-image {
@@ -406,6 +406,7 @@ body.dark-theme .blue-highlight {
 .about-text p {
     margin-bottom: 1.5rem;
     font-size: 1.1rem;
+    line-height: 1.7; /* Improved line height for better readability */
 }
 
 .skills {
@@ -415,6 +416,12 @@ body.dark-theme .blue-highlight {
 .skills h3 {
     margin-bottom: 1rem;
     color: var(--primary-color);
+}
+
+.about-text {
+    display: flex;
+    flex-direction: column;
+    height: auto; /* Explicitly ensure auto height */
 }
 
 .skill-tags {
@@ -460,6 +467,7 @@ body.dark-theme .blue-highlight {
     display: flex;
     flex-direction: column;
     border: 1px solid transparent;
+    height: 100%; /* Set height to 100% to allow for equal heights within grid */
 }
 
 .project-card:hover {
@@ -491,6 +499,7 @@ body.dark-theme .blue-highlight {
     flex: 1;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 }
 
 .project-content h3 {
@@ -503,7 +512,7 @@ body.dark-theme .blue-highlight {
     margin-bottom: 1.2rem;
     font-size: 0.95rem;
     color: var(--dark-grey);
-    flex: 1;
+    flex-grow: 1; /* Allow description to take up available space */
 }
 
 .project-links {
@@ -690,12 +699,10 @@ footer {
     .about-content,
     .contact-content {
         grid-template-columns: 1fr;
-    }
-
-    .about-image {
+    }    .about-image {
         order: -1;
         max-width: 500px;
-        margin: 0 auto;
+        margin: 0 auto 2rem; /* Added bottom margin for spacing */
     }
 }
 
@@ -766,15 +773,9 @@ footer {
 
     .hero h1 {
         font-size: 2rem;
-    }
-
-    .cta-buttons {
+    }    .cta-buttons {
         flex-direction: column;
         gap: 1rem;
-    }
-
-    .project-card {
-        height: 280px;
     }
 
     .projects-grid {
