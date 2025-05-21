@@ -4,6 +4,8 @@ const navLinks = document.querySelector('.nav-links');
 const header = document.querySelector('header');
 const navItems = document.querySelectorAll('.nav-links li a');
 const form = document.querySelector('#contactForm');
+const highlightText = document.querySelector('.highlight');
+const themeToggle = document.querySelector('.theme-toggle');
 
 // Email form submission function
 function submitForm(event) {
@@ -36,6 +38,60 @@ navItems.forEach(item => {
             navLinks.classList.remove('nav-active');
         }
     });
+});
+
+// Typing Animation
+function initTypingAnimation() {
+    if (!highlightText) return;
+    
+    const originalText = highlightText.textContent;
+    highlightText.textContent = '';
+    highlightText.classList.add('typing-animation');
+    
+    let charIndex = 0;
+    const typingSpeed = 100; // milliseconds per character
+    
+    function typeText() {
+        if (charIndex < originalText.length) {
+            highlightText.textContent += originalText.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeText, typingSpeed);
+        }
+    }
+    
+    // Start typing animation after a short delay
+    setTimeout(typeText, 500);
+}
+
+// Initialize typing animation when page loads
+// Theme Toggle
+function initThemeToggle() {
+    // Check for saved theme preference or use device preference
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const savedTheme = localStorage.getItem('theme');
+    
+    if (savedTheme === 'dark' || (!savedTheme && prefersDarkScheme.matches)) {
+        document.body.classList.add('dark-theme');
+    }
+    
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            
+            // Save theme preference
+            if (document.body.classList.contains('dark-theme')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    }
+}
+
+// Initialize all features when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initTypingAnimation();
+    initThemeToggle();
 });
 
 // Sticky Header on Scroll

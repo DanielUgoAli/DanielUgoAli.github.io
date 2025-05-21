@@ -1,5 +1,6 @@
 /* Global Styles */
 :root {
+    /* Light Theme Colors */
     --primary-color: #333333; /* Black */
     --primary-light: #666666; /* Dark grey */
     --secondary-color: #009688; /* Teal accent */
@@ -9,8 +10,24 @@
     --card-background: #ffffff; /* White */
     --grey-color: #e0e0e0; /* Light grey */
     --dark-grey: #4a4a4a; /* Dark grey */
+    --header-background: rgba(255, 255, 255, 0.95);
     --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
+}
+
+/* Dark Theme Colors */
+body.dark-theme {
+    --primary-color: #4a86e8; /* Light blue as primary color in dark mode */
+    --primary-light: #7fa7f4; /* Lighter blue for better contrast */
+    --secondary-color: #2c5bb9; /* Darker blue as secondary */
+    --text-color: #f0f0f0; /* Brighter light text for better readability */
+    --light-text: #ffffff; /* Still white */
+    --background-color: #121212; /* Dark background */
+    --card-background: #1e1e1e; /* Dark card */
+    --grey-color: #2d2d2d; /* Dark grey */
+    --dark-grey: #e0e0e0; /* Lighter grey for dark mode, increased contrast */
+    --header-background: rgba(18, 18, 18, 0.95); /* Dark header */
+    --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 * {
@@ -28,6 +45,7 @@ body {
     line-height: 1.6;
     color: var(--text-color);
     background-color: var(--background-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -108,16 +126,62 @@ header {
     width: 100%;
     top: 0;
     left: 0;
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: var(--header-background);
     box-shadow: var(--box-shadow);
     z-index: 1000;
     padding: 1rem 0;
+    transition: background-color 0.3s ease;
 }
 
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
+    margin-left: 2rem;
+}
+
+/* Theme Toggle Switch */
+.theme-toggle {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    background-color: var(--primary-color);
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5px;
+    cursor: pointer;
+    margin-left: 30px;
+    flex-shrink: 0;
+}
+
+.theme-toggle i {
+    font-size: 14px;
+    color: var(--light-text);
+    z-index: 1;
+}
+
+.toggle-ball {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background-color: var(--light-text);
+    border-radius: 50%;
+    left: 3px;
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+}
+
+body.dark-theme .toggle-ball {
+    transform: translateX(30px);
 }
 
 .logo {
@@ -160,13 +224,14 @@ nav {
     display: none;
     flex-direction: column;
     cursor: pointer;
+    z-index: 1002;
 }
 
 .hamburger span {
     display: block;
     width: 25px;
     height: 3px;
-    background-color: var(--text-color);
+    background-color: var(--primary-color);
     margin-bottom: 5px;
     transition: var(--transition);
 }
@@ -192,6 +257,27 @@ nav {
 
 .highlight {
     color: var(--primary-color);
+    display: inline-block;
+    position: relative;
+}
+
+/* Typing Animation */
+.typing-animation::after {
+    content: "|";
+    position: absolute;
+    right: -5px;
+    width: 2px;
+    animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
 }
 
 .tagline {
@@ -344,12 +430,14 @@ nav {
     position: relative;
     display: flex;
     flex-direction: column;
+    border: 1px solid transparent;
 }
 
 .project-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
     background: linear-gradient(135deg, var(--card-background) 0%, var(--grey-color) 100%);
+    border-color: var(--secondary-color);
 }
 
 .project-image {
@@ -405,6 +493,7 @@ nav {
     align-items: center;
     background-color: var(--primary-color);
     color: var(--light-text);
+    border: 1px solid transparent;
 }
 
 .project-link i {
@@ -413,6 +502,7 @@ nav {
 
 .project-link:hover {
     background-color: var(--secondary-color);
+    border-color: var(--light-text);
     transform: translateY(-3px);
 }
 
@@ -509,6 +599,10 @@ nav {
     font-weight: 500;
 }
 
+body.dark-theme .form-group label {
+    color: var(--secondary-color);
+}
+
 .form-group input,
 .form-group textarea {
     width: 100%;
@@ -517,6 +611,14 @@ nav {
     border-radius: 5px;
     font-family: inherit;
     transition: var(--transition);
+    background-color: var(--card-background);
+    color: var(--text-color);
+}
+
+body.dark-theme .form-group input,
+body.dark-theme .form-group textarea {
+    border-color: #444;
+    background-color: rgba(30, 30, 30, 0.8);
 }
 
 .form-group input:focus,
@@ -576,20 +678,35 @@ footer {
     .tagline {
         font-size: 1.2rem;
     }
-
-    .nav-links {
+    
+    .nav-container {
+        order: 3;
+        position: relative;
+        justify-content: flex-end;
+        margin-left: 0;
+    }
+    
+    .theme-toggle {
+        position: relative;
+        top: auto;
+        right: auto;
+        z-index: 1;
+        margin-left: 20px;
+    }.nav-links {
         position: fixed;
         top: 70px;
         left: 0;
         right: 0;
         flex-direction: column;
-        background-color: white;
+        background-color: var(--card-background);
         padding: 2rem;
         box-shadow: var(--box-shadow);
         transform: translateY(-150%);
-        transition: transform 0.3s ease;
+        transition: transform 0.3s ease, background-color 0.3s ease;
         text-align: center;
         gap: 1.5rem;
+        border-bottom: 2px solid var(--secondary-color);
+        z-index: 1000;
     }
 
     .nav-active {
