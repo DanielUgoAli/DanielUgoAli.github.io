@@ -1,12 +1,14 @@
 /* Global Styles */
 :root {
-    --primary-color: #5e35b1;
-    --primary-light: #7e57c2;
-    --secondary-color: #00bcd4;
-    --text-color: #333;
-    --light-text: #f5f5f5;
-    --background-color: #fafafa;
-    --card-background: #ffffff;
+    --primary-color: #333333; /* Black */
+    --primary-light: #666666; /* Dark grey */
+    --secondary-color: #009688; /* Teal accent */
+    --text-color: #333333; /* Black for text */
+    --light-text: #ffffff; /* White */
+    --background-color: #f5f2ea; /* Cream */
+    --card-background: #ffffff; /* White */
+    --grey-color: #e0e0e0; /* Light grey */
+    --dark-grey: #4a4a4a; /* Dark grey */
     --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
 }
@@ -82,7 +84,7 @@ img {
 }
 
 .primary-btn:hover {
-    background-color: var(--primary-light);
+    background-color: var(--secondary-color);
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
@@ -174,7 +176,7 @@ nav {
     height: 100vh;
     display: flex;
     align-items: center;
-    background: linear-gradient(135deg, #f5f7fa 0%, #e4e7ec 100%);
+    background: linear-gradient(135deg, var(--background-color) 0%, var(--grey-color) 100%);
     padding-top: 70px;
 }
 
@@ -307,7 +309,7 @@ nav {
 }
 
 .skill-tag {
-    background-color: var(--primary-light);
+    background-color: var(--primary-color);
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 20px;
@@ -318,12 +320,13 @@ nav {
 .skill-tag:hover {
     transform: translateY(-5px);
     box-shadow: var(--box-shadow);
+    background-color: var(--secondary-color);
 }
 
 /* Projects Section */
 .projects {
     padding: 6rem 0;
-    background-color: #f0f2f5;
+    background-color: var(--grey-color);
 }
 
 .projects-grid {
@@ -333,62 +336,75 @@ nav {
 }
 
 .project-card {
-    height: 350px;
     border-radius: 15px;
     overflow: hidden;
+    background-color: var(--card-background);
     box-shadow: var(--box-shadow);
     transition: var(--transition);
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .project-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, var(--card-background) 0%, var(--grey-color) 100%);
 }
 
 .project-image {
     width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.project-image img {
+    width: 100%;
     height: 100%;
-    background-size: cover;
-    background-position: center;
+    object-fit: cover;
+    transition: var(--transition);
 }
 
-.project-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(0, 0, 0, 0.7);
+.project-card:hover .project-image img {
+    transform: scale(1.05);
+}
+
+.project-content {
     padding: 1.5rem;
-    color: var(--light-text);
-    transform: translateY(100%);
-    transition: transform 0.4s ease;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-.project-card:hover .project-overlay {
-    transform: translateY(0);
-}
-
-.project-overlay h3 {
+.project-content h3 {
     font-size: 1.3rem;
-    margin-bottom: 0.5rem;
-    color: var(--secondary-color);
+    margin-bottom: 0.8rem;
+    color: var(--primary-color);
 }
 
-.project-overlay p {
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
+.project-content p {
+    margin-bottom: 1.2rem;
+    font-size: 0.95rem;
+    color: var(--dark-grey);
+    flex: 1;
 }
 
 .project-links {
     display: flex;
     gap: 1rem;
+    margin-top: auto;
 }
 
 .project-link {
-    color: var(--light-text);
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
     font-size: 0.9rem;
+    font-weight: 500;
     transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--primary-color);
+    color: var(--light-text);
 }
 
 .project-link i {
@@ -396,7 +412,8 @@ nav {
 }
 
 .project-link:hover {
-    color: var(--secondary-color);
+    background-color: var(--secondary-color);
+    transform: translateY(-3px);
 }
 
 /* Contact Section */
@@ -441,25 +458,26 @@ nav {
 
 .social-links {
     display: flex;
-    gap: 1rem;
+    flex-wrap: wrap;
+    gap: 0.8rem;
     margin-top: 0.5rem;
 }
 
 .social-links a {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
     background-color: var(--primary-color);
     color: white;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 0.5rem;
     transition: var(--transition);
+    font-size: 0.9rem;
 }
 
 .social-links a:hover {
     transform: translateY(-5px);
-    background-color: var(--primary-light);
+    background-color: var(--secondary-color);
     box-shadow: var(--box-shadow);
 }
 
