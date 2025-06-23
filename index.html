@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dan</title>    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="landing">
+        <div class="container">
+            <h1>Welcome to <span id="typing-text" class="highlight"></span><span class="cursor"></span></h1>
+            <p class="tagline">Ai Developer | Space Enthusiast | Bread Lover</p>
+            <div class="social-links">
+                <a href="https://github.com/DanielUgoAli" class="social-btn" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/daniel-ugo-ali-627996359/" class="social-btn" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://twitter.com/yourusername" class="social-btn" aria-label="Twitter/X">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://instagram.com/realdanielali" class="social-btn" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <h2>About</h2>
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="images/pic.jpg" alt="me" class="profile-pic">
+                    <div class="floating-element one"><i class="fas fa-code"></i></div>
+                    <div class="floating-element two"><i class="fas fa-lightbulb"></i></div>
+                    <div class="floating-element three"><i class="fas fa-rocket"></i></div>
+                </div>                <div class="about-text">
+                    <p>I am a 2nd year Undergraduate, Computer Science <a href="https://nileuniversity.edu.ng/" class="university-btn">@Nile University</a></p>
+                    <p>I specialize from deep learning to computer vision. Open to collab and ideas.</p>
+                    <div class="skills-container">
+                        <!-- <h3>My Skills</h3> -->
+                        <div class="skill-tags">
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">C++</span>
+                            <span class="skill-tag">Numpy</span>
+                            <span class="skill-tag">Scikit Learn</span>
+                            <span class="skill-tag">PyTorch</span>
+                            <span class="skill-tag">Fastapi</span>
+                            <span class="skill-tag">Docker</span>
+                            <span class="skill-tag">Git</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2>Featured Projects</h2>
+            <div class="project-grid">
+                <!-- Project cards added directly to HTML -->                <div class="project-card">
+                    <h3>Dataruns</h3>
+                    <div class="project-image">
+                        <img src="images/project1.png" alt="Project One">
+                    </div>
+                    <p>A python based library used for creating function execution pipelines. 
+                        It can also be used for data extraction and manipultaion
+                        <br>It is a work in progress with an alpha version.</p>
+                    </p>
+                    <div class="project-links">
+                        <a href="#" class="btn">View Project</a>
+                        <a href="#" class="btn">Source Code</a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <h3>Infer</h3>
+                    <div class="project-image">
+                        <img src="images/project2.png" alt="Project Two">
+                    </div>
+                    <p>A small engine/framework made with libtorch(C++) for easy inference of torch based models from anywhere even in the command line.</p>
+                    <p>[Still in development]</p>
+                    <div class="project-links">
+                        <a href="#" class="btn">View Project</a>
+                        <a href="#" class="btn">Source Code</a>
+                    </div>
+                </div>
+                
+                <!-- <div class="project-card">
+                    <h3>Project Three</h3>
+                    <div class="project-image">
+                        <img src="images/project3.jpg" alt="Project Three">
+                    </div>
+                    <p> </p>
+                    <div class="project-links">
+                        <a href="#" class="btn">View Project</a>
+                        <a href="#" class="btn">Source Code</a>
+                    </div>
+                </div> -->
+                
+                <!-- <div class="project-card">
+                    <h3>Project Four</h3>
+                    <div class="project-image">
+                        <img src="images/project1.jpg" alt="Project Four">
+                    </div>
+                    <p>This is a new project I've added manually to the HTML. It demonstrates that we can easily add more projects directly to the page.</p>
+                    <div class="project-links">
+                        <a href="#" class="btn">View Project</a>
+                        <a href="#" class="btn">Source Code</a>
+                    </div>
+                </div> -->
+            
+
+
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 DanielUgoAli. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
