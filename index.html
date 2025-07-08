@@ -3,142 +3,551 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dan</title>    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-    <link rel="stylesheet" href="styles.css">
+    <title>Under Maintenance - Dan</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Matrix-style background */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.1;
+        }
+
+        .matrix-rain {
+            position: absolute;
+            top: -100px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: #00ff41;
+            white-space: nowrap;
+            animation: rain 8s linear infinite;
+        }
+
+        @keyframes rain {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* Terminal-style container */
+        .terminal {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .terminal-window {
+            background: rgba(10, 10, 10, 0.95);
+            border: 1px solid #333;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 900px;
+            box-shadow: 0 20px 60px rgba(0, 255, 65, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .terminal-header {
+            background: #1a1a1a;
+            padding: 12px 20px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-close, .btn-minimize, .btn-maximize {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .btn-close { background: #ff5f56; }
+        .btn-minimize { background: #ffbd2e; }
+        .btn-maximize { background: #27ca3f; }
+
+        .terminal-title {
+            color: #666;
+            font-size: 14px;
+            margin-left: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .terminal-content {
+            padding: 40px;
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1.6;
+        }
+
+        /* Typing animation */
+        .typing-line {
+            display: block;
+            margin: 10px 0;
+            opacity: 0;
+            animation: typeIn 0.5s ease-out forwards;
+        }
+
+        .typing-line:nth-child(1) { animation-delay: 0.5s; }
+        .typing-line:nth-child(2) { animation-delay: 1s; }
+        .typing-line:nth-child(3) { animation-delay: 1.5s; }
+        .typing-line:nth-child(4) { animation-delay: 2s; }
+        .typing-line:nth-child(5) { animation-delay: 2.5s; }
+        .typing-line:nth-child(6) { animation-delay: 3s; }
+        .typing-line:nth-child(7) { animation-delay: 3.5s; }
+
+        @keyframes typeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .prompt {
+            color: #00ff41;
+            font-weight: 600;
+        }
+
+        .command {
+            color: #66d9f5;
+        }
+
+        .output {
+            color: #ffffff;
+            margin-left: 20px;
+        }
+
+        .error {
+            color: #ff6b6b;
+        }
+
+        .warning {
+            color: #ffd93d;
+        }
+
+        .success {
+            color: #6bcf7f;
+        }
+
+        .comment {
+            color: #666;
+        }
+
+        /* ASCII Art */
+        .ascii-art {
+            color: #00ff41;
+            font-size: 10px;
+            text-align: center;
+            margin: 30px 0;
+            line-height: 1.2;
+            white-space: pre;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #00ff41;
+            }
+            to {
+                text-shadow: 0 0 20px #00ff41, 0 0 30px #00ff41;
+            }
+        }
+
+        /* Progress bar in terminal style */
+        .progress-container {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 20px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff41, #00cc33);
+            width: 0%;
+            animation: progressLoad 4s ease-in-out infinite;
+            transition: width 0.3s ease;
+        }
+
+        @keyframes progressLoad {
+            0% { width: 0%; }
+            50% { width: 85%; }
+            100% { width: 0%; }
+        }
+
+        .progress-text {
+            color: #00ff41;
+            font-size: 12px;
+            min-width: 60px;
+        }
+
+        /* Social links terminal style */
+        .social-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid #00ff41;
+            border-radius: 4px;
+            color: #00ff41;
+            text-decoration: none;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .social-btn:hover {
+            background: rgba(0, 255, 65, 0.2);
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .social-btn i {
+            font-size: 14px;
+        }
+
+        /* Blinking cursor */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 15px;
+            background: #00ff41;
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Info box */
+        .info-box {
+            background: rgba(0, 255, 65, 0.05);
+            border: 1px solid #00ff41;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .info-title {
+            color: #00ff41;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .terminal-content {
+                padding: 20px;
+            }
+            
+            .ascii-art {
+                font-size: 8px;
+            }
+            
+            .social-links {
+                justify-content: center;
+            }
+            
+            .terminal-window {
+                margin: 10px;
+            }
+        }
+
+        /* System monitor style */
+        .system-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            color: #00ff41;
+            font-size: 16px;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-            </ul>
-        </nav>
-    </header>
+    <!-- Matrix Rain Background -->
+    <div class="matrix-bg" id="matrixBg"></div>
 
-    <section id="home" class="landing">
-        <div class="container">
-            <h1>Welcome to <span id="typing-text" class="highlight"></span><span class="cursor"></span></h1>
-            <p class="tagline">Ai Developer | Space Enthusiast | Bread Lover</p>
-            <div class="social-links">
-                <a href="https://github.com/DanielUgoAli" class="social-btn" aria-label="GitHub">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="https://www.linkedin.com/in/daniel-ugo-ali-627996359/" class="social-btn" aria-label="LinkedIn">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a href="https://twitter.com/yourusername" class="social-btn" aria-label="Twitter/X">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a href="https://instagram.com/realdanielali" class="social-btn" aria-label="Instagram">
-                    <i class="fab fa-instagram"></i>
-                </a>
+    <!-- Terminal Interface -->
+    <div class="terminal">
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-buttons">
+                    <div class="btn-close"></div>
+                    <div class="btn-minimize"></div>
+                    <div class="btn-maximize"></div>
+                </div>
+                <div class="terminal-title">dan@portfolio:~$ maintenance_mode</div>
             </div>
-        </div>
-    </section>
-
-    <section id="about" class="about">
-        <div class="container">
-            <h2>About</h2>
-            <div class="about-content">
-                <div class="about-image">
-                    <img src="images/pic.jpg" alt="me" class="profile-pic">
-                    <div class="floating-element one"><i class="fas fa-code"></i></div>
-                    <div class="floating-element two"><i class="fas fa-lightbulb"></i></div>
-                    <div class="floating-element three"><i class="fas fa-rocket"></i></div>
-                </div>                <div class="about-text">
-                    <p>I am a 2nd year Undergraduate, Computer Science <a href="https://nileuniversity.edu.ng/" class="university-btn">@Nile University</a></p>
-                    <p>I specialize from deep learning to computer vision. Open to collab and ideas.</p>
-                    <div class="skills-container">
-                        <!-- <h3>My Skills</h3> -->
-                        <div class="skill-tags">
-                            <span class="skill-tag">Python</span>
-                            <span class="skill-tag">C++</span>
-                            <span class="skill-tag">Numpy</span>
-                            <span class="skill-tag">Scikit Learn</span>
-                            <span class="skill-tag">PyTorch</span>
-                            <span class="skill-tag">tinygrad</span>
-                            <span class="skill-tag">Fastapi</span>
-                            <span class="skill-tag">Docker</span>
-                            <span class="skill-tag">Git</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="projects" class="projects">
-        <div class="container">
-            <h2>Featured Projects</h2>
-            <div class="project-grid">
-                <!-- Project cards added directly to HTML -->                <div class="project-card">
-                    <h3>Dataruns</h3>
-                    <div class="project-image">
-                        <img src="images/project1.png" alt="Project One">
-                    </div>
-                    <p>A python based library used for creating function execution pipelines. 
-                        It can also be used for data extraction and manipultaion
-                        <br>It is a work in progress with an alpha version.</p>
-                    </p>
-                    <div class="project-links">
-                        <a href="https://github.com/DanielUgoAli/Dataruns" class="btn">View </a>
-                        <!-- <a href="#" class="btn">Source Code</a> -->
-                    </div>
-                </div>
-                
-                <div class="project-card">
-                    <h3>Infer</h3>
-                    <div class="project-image">
-                        <img src="images/project2.png" alt="Project Two">
-                    </div>
-                    <p>A small engine/framework made with libtorch(C++) for easy inference of torch based models from anywhere even in the command line.</p>
-                    <p>[Still in development]</p>
-                    <div class="project-links">
-                        <a href="#" class="btn">[STILL IN DEV; DM TO CONTRIBUTE] </a>
-                        <!-- <a href="#" class="btn">Source Code</a> -->
-                    </div>
-                </div>
-                
-                <!-- <div class="project-card">
-                    <h3>Project Three</h3>
-                    <div class="project-image">
-                        <img src="images/project3.jpg" alt="Project Three">
-                    </div>
-                    <p> </p>
-                    <div class="project-links">
-                        <a href="#" class="btn">View Project</a>
-                        <a href="#" class="btn">Source Code</a>
-                    </div>
-                </div> -->
-                
-                <!-- <div class="project-card">
-                    <h3>Project Four</h3>
-                    <div class="project-image">
-                        <img src="images/project1.jpg" alt="Project Four">
-                    </div>
-                    <p>This is a new project I've added manually to the HTML. It demonstrates that we can easily add more projects directly to the page.</p>
-                    <div class="project-links">
-                        <a href="#" class="btn">View Project</a>
-                        <a href="#" class="btn">Source Code</a>
-                    </div>
-                </div> -->
             
-
-
+            <div class="terminal-content">
+                <div class="typing-line">
+                    <span class="prompt">daniel@dev:~$</span> 
+                    <span class="command">status --check</span>
+                </div>
+                
+                <div class="typing-line">
+                    <span class="output error">⚠ MAINTENANCE MODE ACTIVE</span>
+                </div>
+                
+                <div class="typing-line">
+                    <span class="output">System Status: Under Development</span>
+                </div>
+                
+                <div class="ascii-art typing-line">
+    ██╗   ██╗███╗   ██╗██████╗ ███████╗██████╗     
+    ██║   ██║████╗  ██║██╔══██╗██╔════╝██╔══██╗    
+    ██║   ██║██╔██╗ ██║██║  ██║█████╗  ██████╔╝    
+    ██║   ██║██║╚██╗██║██║  ██║██╔══╝  ██╔══██╗    
+    ╚██████╔╝██║ ╚████║██████╔╝███████╗██║  ██║    
+     ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚══════╝╚═╝  ╚═╝    
+                                                    
+    ███╗   ███╗ █████╗ ██╗███╗   ██╗████████╗      
+    ████╗ ████║██╔══██╗██║████╗  ██║╚══██╔══╝      
+    ██╔████╔██║███████║██║██╔██╗ ██║   ██║         
+    ██║╚██╔╝██║██╔══██║██║██║╚██╗██║   ██║         
+    ██║ ╚═╝ ██║██║  ██║██║██║ ╚████║   ██║         
+    ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝   ╚═╝         
+                </div>
+                
+                <div class="typing-line">
+                    <span class="prompt">daniel@dev:~$</span> 
+                    <span class="command">whoami</span>
+                </div>
+                
+                <div class="info-box typing-line">
+                    <div class="info-title">SYSTEM INFORMATION</div>
+                    <div class="output">Name: Daniel Ugo Ali</div>
+                    <div class="output">Role: AI Developer | Space Enthusiast | Bread Lover</div>
+                    <div class="output">Education: 2nd Yr Computer Science @ Nile University</div>
+                    <div class="output">Specialization: Deep Learning → Computer Vision</div>
+                    <div class="output">Status: Open to collaboration and ideas</div>
+                </div>
+                
+                <div class="typing-line">
+                    <span class="prompt">daniel@dev:~$</span> 
+                    <span class="command">maintenance --progress</span>
+                </div>
+                
+                <div class="progress-container typing-line">
+                    <span class="output">Building...</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <span class="progress-text">∞%</span>
+                </div>
+                
+                <div class="system-info typing-line">
+                    <div class="stat-item">
+                        <div class="stat-label">UPTIME</div>
+                        <div class="stat-value">2 YEARS</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">PROJECTS</div>
+                        <div class="stat-value">ACTIVE</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">STATUS</div>
+                        <div class="stat-value success">BUILDING</div>
+                    </div>
+                </div>
+                
+                <div class="typing-line">
+                    <span class="output comment"># I am rebuilding everything from scratch</span>
+                </div>
+                <div class="typing-line">
+                    <span class="output comment"># Better features, a blog post, more awesomeness</span>
+                </div>
+                <div class="typing-line">
+                    <span class="output comment"># Stay tuned for the upgrade! 🚀</span>
+                </div>
+                
+                <div class="social-section typing-line">
+                    <div class="typing-line">
+                        <span class="prompt">daniel@dev:~$</span> 
+                        <span class="command">connect --social</span>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a href="https://github.com/DanielUgoAli" class="social-btn" target="_blank">
+                            <i class="fab fa-github"></i>
+                            <span>github</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/daniel-ugo-ali-627996359/" class="social-btn" target="_blank">
+                            <i class="fab fa-linkedin-in"></i>
+                            <span>linkedin</span>
+                        </a>
+                        <a href="https://twitter.com/yourusername" class="social-btn" target="_blank">
+                            <i class="fab fa-twitter"></i>
+                            <span>twitter</span>
+                        </a>
+                        <a href="https://instagram.com/realdanielali" class="social-btn" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                            <span>instagram</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="typing-line">
+                    <span class="prompt">daniel@dev:~$</span> 
+                    <span class="cursor"></span>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 DanielUgoAli. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
+    <script>
+        // Matrix rain effect
+        function createMatrixRain() {
+            const matrixBg = document.getElementById('matrixBg');
+            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            
+            for (let i = 0; i < 50; i++) {
+                const rain = document.createElement('div');
+                rain.className = 'matrix-rain';
+                rain.style.left = Math.random() * 100 + '%';
+                rain.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                rain.style.animationDelay = Math.random() * 2 + 's';
+                
+                let text = '';
+                for (let j = 0; j < 20; j++) {
+                    text += chars[Math.floor(Math.random() * chars.length)] + '\n';
+                }
+                rain.textContent = text;
+                
+                matrixBg.appendChild(rain);
+            }
+        }
+        
+        // Initialize effects
+        document.addEventListener('DOMContentLoaded', function() {
+            createMatrixRain();
+            
+            // Random progress updates
+            const progressFill = document.querySelector('.progress-fill');
+            const progressText = document.querySelector('.progress-text');
+            
+            setInterval(() => {
+                const randomProgress = Math.floor(Math.random() * 100);
+                progressText.textContent = randomProgress + '%';
+            }, 2000);
+            
+            // Terminal cursor blink
+            const cursor = document.querySelector('.cursor');
+            setInterval(() => {
+                cursor.style.opacity = cursor.style.opacity === '0' ? '1' : '0';
+            }, 1000);
+            
+            // Add some terminal-like interactions
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const lines = document.querySelectorAll('.typing-line');
+                    lines.forEach(line => {
+                        line.style.animationDelay = '0s';
+                        line.style.opacity = '1';
+                    });
+                }
+            });
+        });
+        
+        // Easter egg - Konami code
+        let konamiCode = [];
+        const konami = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // ↑↑↓↓←→←→BA
+        
+        document.addEventListener('keydown', function(e) {
+            konamiCode.push(e.keyCode);
+            if (konamiCode.length > konami.length) {
+                konamiCode.shift();
+            }
+            
+            if (konamiCode.join(',') === konami.join(',')) {
+                document.body.style.filter = 'hue-rotate(180deg)';
+                setTimeout(() => {
+                    document.body.style.filter = '';
+                }, 3000);
+            }
+        });
+    </script>
 </body>
 </html>
