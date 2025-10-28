@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post</title>
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-logo">Daniel</div>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../projects.html">Projects</a></li>
+                <li><a href="../blogs.html" class="active">Blogs</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <h1 id="postTitle">Loading...</h1>
+            <p class="blog-date" id="postDate"></p>
+        </div>
+    </section>
+
+    <section class="blog-single">
+        <div class="container">
+            <article class="blog-content" id="blogContent">
+                <p>Loading blog post...</p>
+            </article>
+            <div class="blog-nav">
+                <a href="../blogs.html" class="btn-back">← Back to Blogs</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Daniel. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+    <script>
+        // Get the post ID from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+
+        if (postId) {
+            // Fetch the markdown file from posts folder
+            fetch(`../posts/${postId}.md`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Blog post not found');
+                    }
+                    return response.text();
+                })
+                .then(markdown => {
+                    // Parse the markdown (first line is title, second line is date)
+                    const lines = markdown.split('\n');
+                    const title = lines[0].replace(/^#+\s*/, '');
+                    const dateMatch = markdown.match(/Date:\s*(.+)/);
+                    const date = dateMatch ? dateMatch[1] : 'Date not specified';
+
+                    // Remove title and date from markdown for content
+                    let content = lines.slice(2).join('\n');
+                    content = content.replace(/Date:.*\n/, '');
+
+                    // Convert markdown to HTML
+                    const htmlContent = marked.parse(content);
+
+                    // Update the page
+                    document.getElementById('postTitle').textContent = title;
+                    document.getElementById('postDate').textContent = date;
+                    document.getElementById('blogContent').innerHTML = htmlContent;
+                    document.title = `${title} - Blog`;
+                })
+                .catch(error => {
+                    document.getElementById('blogContent').innerHTML = `<p>Error loading blog post: ${error.message}</p>`;
+                    console.error('Error:', error);
+                });
+        } else {
+            document.getElementById('blogContent').innerHTML = '<p>No blog post specified.</p>';
+        }
+    </script>
+</body>
+</html>

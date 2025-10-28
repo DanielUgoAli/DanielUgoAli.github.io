@@ -3,551 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Under Maintenance - Dan</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #0a0a0a;
-            color: #ffffff;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Matrix-style background */
-        .matrix-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            opacity: 0.1;
-        }
-
-        .matrix-rain {
-            position: absolute;
-            top: -100px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
-            color: #00ff41;
-            white-space: nowrap;
-            animation: rain 8s linear infinite;
-        }
-
-        @keyframes rain {
-            to {
-                transform: translateY(100vh);
-            }
-        }
-
-        /* Terminal-style container */
-        .terminal {
-            position: relative;
-            z-index: 10;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .terminal-window {
-            background: rgba(10, 10, 10, 0.95);
-            border: 1px solid #333;
-            border-radius: 8px;
-            width: 100%;
-            max-width: 900px;
-            box-shadow: 0 20px 60px rgba(0, 255, 65, 0.1);
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
-
-        .terminal-header {
-            background: #1a1a1a;
-            padding: 12px 20px;
-            border-bottom: 1px solid #333;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .terminal-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn-close, .btn-minimize, .btn-maximize {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        .btn-close { background: #ff5f56; }
-        .btn-minimize { background: #ffbd2e; }
-        .btn-maximize { background: #27ca3f; }
-
-        .terminal-title {
-            color: #666;
-            font-size: 14px;
-            margin-left: 12px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .terminal-content {
-            padding: 40px;
-            font-family: 'JetBrains Mono', monospace;
-            line-height: 1.6;
-        }
-
-        /* Typing animation */
-        .typing-line {
-            display: block;
-            margin: 10px 0;
-            opacity: 0;
-            animation: typeIn 0.5s ease-out forwards;
-        }
-
-        .typing-line:nth-child(1) { animation-delay: 0.5s; }
-        .typing-line:nth-child(2) { animation-delay: 1s; }
-        .typing-line:nth-child(3) { animation-delay: 1.5s; }
-        .typing-line:nth-child(4) { animation-delay: 2s; }
-        .typing-line:nth-child(5) { animation-delay: 2.5s; }
-        .typing-line:nth-child(6) { animation-delay: 3s; }
-        .typing-line:nth-child(7) { animation-delay: 3.5s; }
-
-        @keyframes typeIn {
-            from {
-                opacity: 0;
-                transform: translateX(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .prompt {
-            color: #00ff41;
-            font-weight: 600;
-        }
-
-        .command {
-            color: #66d9f5;
-        }
-
-        .output {
-            color: #ffffff;
-            margin-left: 20px;
-        }
-
-        .error {
-            color: #ff6b6b;
-        }
-
-        .warning {
-            color: #ffd93d;
-        }
-
-        .success {
-            color: #6bcf7f;
-        }
-
-        .comment {
-            color: #666;
-        }
-
-        /* ASCII Art */
-        .ascii-art {
-            color: #00ff41;
-            font-size: 10px;
-            text-align: center;
-            margin: 30px 0;
-            line-height: 1.2;
-            white-space: pre;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 5px #00ff41;
-            }
-            to {
-                text-shadow: 0 0 20px #00ff41, 0 0 30px #00ff41;
-            }
-        }
-
-        /* Progress bar in terminal style */
-        .progress-container {
-            margin: 20px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .progress-bar {
-            flex: 1;
-            height: 20px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 4px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00ff41, #00cc33);
-            width: 0%;
-            animation: progressLoad 4s ease-in-out infinite;
-            transition: width 0.3s ease;
-        }
-
-        @keyframes progressLoad {
-            0% { width: 0%; }
-            50% { width: 85%; }
-            100% { width: 0%; }
-        }
-
-        .progress-text {
-            color: #00ff41;
-            font-size: 12px;
-            min-width: 60px;
-        }
-
-        /* Social links terminal style */
-        .social-section {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #333;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .social-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            background: rgba(0, 255, 65, 0.1);
-            border: 1px solid #00ff41;
-            border-radius: 4px;
-            color: #00ff41;
-            text-decoration: none;
-            font-size: 12px;
-            transition: all 0.3s ease;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .social-btn:hover {
-            background: rgba(0, 255, 65, 0.2);
-            box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .social-btn i {
-            font-size: 14px;
-        }
-
-        /* Blinking cursor */
-        .cursor {
-            display: inline-block;
-            width: 10px;
-            height: 15px;
-            background: #00ff41;
-            animation: blink 1s infinite;
-            margin-left: 2px;
-        }
-
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        /* Info box */
-        .info-box {
-            background: rgba(0, 255, 65, 0.05);
-            border: 1px solid #00ff41;
-            border-radius: 4px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        .info-title {
-            color: #00ff41;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .terminal-content {
-                padding: 20px;
-            }
-            
-            .ascii-art {
-                font-size: 8px;
-            }
-            
-            .social-links {
-                justify-content: center;
-            }
-            
-            .terminal-window {
-                margin: 10px;
-            }
-        }
-
-        /* System monitor style */
-        .system-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .stat-item {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid #333;
-            border-radius: 4px;
-            padding: 12px;
-            text-align: center;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            color: #00ff41;
-            font-size: 16px;
-            font-weight: 600;
-        }
-    </style>
+    <title>Daniel - Home</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Matrix Rain Background -->
-    <div class="matrix-bg" id="matrixBg"></div>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-logo">🥐</div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="blogs.html">Blogs</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </div>
+    </nav>
 
-    <!-- Terminal Interface -->
-    <div class="terminal">
-        <div class="terminal-window">
-            <div class="terminal-header">
-                <div class="terminal-buttons">
-                    <div class="btn-close"></div>
-                    <div class="btn-minimize"></div>
-                    <div class="btn-maximize"></div>
-                </div>
-                <div class="terminal-title">dan@portfolio:~$ maintenance_mode</div>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="typing-animation">Hi, I'm Daniel</h1>
+                <p class="rotating-text">Developing, building and chilling 🥐.</p>
             </div>
-            
-            <div class="terminal-content">
-                <div class="typing-line">
-                    <span class="prompt">daniel@dev:~$</span> 
-                    <span class="command">status --check</span>
+        </div>
+    </section>
+
+    <section class="about">
+        <div class="container">
+            <h2>About Me</h2>
+            <div class="about-content">
+                <div class="about-item">
+                    <span class="about-icon">🎓</span>
+                    <h3>Education</h3>
+                    <p>3rd year @ Nile University</p>
                 </div>
-                
-                <div class="typing-line">
-                    <span class="output error">⚠ MAINTENANCE MODE ACTIVE</span>
+                <div class="about-item">
+                    <span class="about-icon">⚙️</span>
+                    <h3>Building</h3>
+                    <p>I like building with FastAPI, PyTorch, and learning Tinygrad</p>
                 </div>
-                
-                <div class="typing-line">
-                    <span class="output">System Status: Under Development</span>
-                </div>
-                
-                <div class="ascii-art typing-line">
-    ██╗   ██╗███╗   ██╗██████╗ ███████╗██████╗     
-    ██║   ██║████╗  ██║██╔══██╗██╔════╝██╔══██╗    
-    ██║   ██║██╔██╗ ██║██║  ██║█████╗  ██████╔╝    
-    ██║   ██║██║╚██╗██║██║  ██║██╔══╝  ██╔══██╗    
-    ╚██████╔╝██║ ╚████║██████╔╝███████╗██║  ██║    
-     ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚══════╝╚═╝  ╚═╝    
-                                                    
-    ███╗   ███╗ █████╗ ██╗███╗   ██╗████████╗      
-    ████╗ ████║██╔══██╗██║████╗  ██║╚══██╔══╝      
-    ██╔████╔██║███████║██║██╔██╗ ██║   ██║         
-    ██║╚██╔╝██║██╔══██║██║██║╚██╗██║   ██║         
-    ██║ ╚═╝ ██║██║  ██║██║██║ ╚████║   ██║         
-    ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝   ╚═╝         
-                </div>
-                
-                <div class="typing-line">
-                    <span class="prompt">daniel@dev:~$</span> 
-                    <span class="command">whoami</span>
-                </div>
-                
-                <div class="info-box typing-line">
-                    <div class="info-title">SYSTEM INFORMATION</div>
-                    <div class="output">Name: Daniel Ugo Ali</div>
-                    <div class="output">Role: AI Developer | Space Enthusiast | Bread Lover</div>
-                    <div class="output">Education: 3rd Year Computer Science @ Nile University</div>
-                    <div class="output">Specialization: Deep Learning → Computer Vision</div>
-                    <div class="output">Status: Open to collaboration and ideas</div>
-                </div>
-                
-                <div class="typing-line">
-                    <span class="prompt">daniel@dev:~$</span> 
-                    <span class="command">maintenance --progress</span>
-                </div>
-                
-                <div class="progress-container typing-line">
-                    <span class="output">Building...</span>
-                    <div class="progress-bar">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <span class="progress-text">∞%</span>
-                </div>
-                
-                <div class="system-info typing-line">
-                    <div class="stat-item">
-                        <div class="stat-label">UPTIME</div>
-                        <div class="stat-value">2 YEARS</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-label">PROJECTS</div>
-                        <div class="stat-value">ACTIVE</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-label">STATUS</div>
-                        <div class="stat-value success">BUILDING</div>
-                    </div>
-                </div>
-                
-                <div class="typing-line">
-                    <span class="output comment"># I am rebuilding everything from scratch</span>
-                </div>
-                <div class="typing-line">
-                    <span class="output comment"># Better features, a blog post, more awesomeness</span>
-                </div>
-                <div class="typing-line">
-                    <span class="output comment"># Stay tuned for the upgrade! 🚀</span>
-                </div>
-                
-                <div class="social-section typing-line">
-                    <div class="typing-line">
-                        <span class="prompt">daniel@dev:~$</span> 
-                        <span class="command">connect --social</span>
-                    </div>
-                    
-                    <div class="social-links">
-                        <a href="https://github.com/DanielUgoAli" class="social-btn" target="_blank">
-                            <i class="fab fa-github"></i>
-                            <span>github</span>
-                        </a>
-                        <a href="https://www.linkedin.com/in/daniel-ugo-ali-627996359/" class="social-btn" target="_blank">
-                            <i class="fab fa-linkedin-in"></i>
-                            <span>linkedin</span>
-                        </a>
-                        <a href="https://twitter.com/realdanugoali" class="social-btn" target="_blank">
-                            <i class="fab fa-twitter"></i>
-                            <span>twitter</span>
-                        </a>
-                        <a href="https://instagram.com/realdanielali" class="social-btn" target="_blank">
-                            <i class="fab fa-instagram"></i>
-                            <span>instagram</span>
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="typing-line">
-                    <span class="prompt">daniel@dev:~$</span> 
-                    <span class="cursor"></span>
+                <div class="about-item">
+                    <span class="about-icon">🤖</span>
+                    <h3>Interests</h3>
+                    <p>Deep learning & Computer Vision, exploring NLP</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <script>
-        // Matrix rain effect
-        function createMatrixRain() {
-            const matrixBg = document.getElementById('matrixBg');
-            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            
-            for (let i = 0; i < 50; i++) {
-                const rain = document.createElement('div');
-                rain.className = 'matrix-rain';
-                rain.style.left = Math.random() * 100 + '%';
-                rain.style.animationDuration = (Math.random() * 3 + 5) + 's';
-                rain.style.animationDelay = Math.random() * 2 + 's';
-                
-                let text = '';
-                for (let j = 0; j < 20; j++) {
-                    text += chars[Math.floor(Math.random() * chars.length)] + '\n';
-                }
-                rain.textContent = text;
-                
-                matrixBg.appendChild(rain);
-            }
-        }
-        
-        // Initialize effects
-        document.addEventListener('DOMContentLoaded', function() {
-            createMatrixRain();
-            
-            // Random progress updates
-            const progressFill = document.querySelector('.progress-fill');
-            const progressText = document.querySelector('.progress-text');
-            
-            setInterval(() => {
-                const randomProgress = Math.floor(Math.random() * 100);
-                progressText.textContent = randomProgress + '%';
-            }, 2000);
-            
-            // Terminal cursor blink
-            const cursor = document.querySelector('.cursor');
-            setInterval(() => {
-                cursor.style.opacity = cursor.style.opacity === '0' ? '1' : '0';
-            }, 1000);
-            
-            // Add some terminal-like interactions
-            document.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    const lines = document.querySelectorAll('.typing-line');
-                    lines.forEach(line => {
-                        line.style.animationDelay = '0s';
-                        line.style.opacity = '1';
-                    });
-                }
-            });
-        });
-        
-        // Easter egg - Konami code
-        let konamiCode = [];
-        const konami = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // ↑↑↓↓←→←→BA
-        
-        document.addEventListener('keydown', function(e) {
-            konamiCode.push(e.keyCode);
-            if (konamiCode.length > konami.length) {
-                konamiCode.shift();
-            }
-            
-            if (konamiCode.join(',') === konami.join(',')) {
-                document.body.style.filter = 'hue-rotate(180deg)';
-                setTimeout(() => {
-                    document.body.style.filter = '';
-                }, 3000);
-            }
-        });
-    </script>
+    <section class="contact">
+        <div class="container">
+            <h2>Get In Touch</h2>
+            <div class="contact-info">
+                <p><strong>Email:</strong> <a href="mailto:your.email@example.com">your.email@example.com</a></p>
+                <div class="social-icons">
+                    <a href="https://github.com/yourprofile" target="_blank" title="GitHub" style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 50%; background-color: rgba(37, 99, 235, 0.15); border: 2px solid #2563eb; text-decoration: none; transition: all 0.3s ease;">
+                        <svg viewBox="0 0 24 24" fill="currentColor" style="width: 20px; height: 20px; color: #2563eb;">
+                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.016 12.016 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                        </svg>
+                    </a>
+                    <a href="https://instagram.com/yourprofile" target="_blank" title="Instagram" style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 50%; background-color: rgba(37, 99, 235, 0.15); border: 2px solid #2563eb; text-decoration: none; transition: all 0.3s ease;">
+                        <svg viewBox="0 0 24 24" fill="currentColor" style="width: 20px; height: 20px; color: #2563eb;">
+                            <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.117.6c-.794.272-1.473.646-2.154 1.327-.682.68-1.046 1.35-1.328 2.154-.266.792-.468 1.662-.527 2.94C.048 8.333.036 8.74.036 12s.015 3.667.072 4.947c.06 1.277.261 2.148.527 2.94.282.756.646 1.422 1.327 2.104.68.681 1.35 1.046 2.154 1.327.792.266 1.662.468 2.94.527C8.333 23.982 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.261 2.94-.527.756-.282 1.422-.646 2.104-1.327.681-.68 1.046-1.35 1.327-2.154.266-.792.468-1.662.527-2.94.048-1.28.06-1.687.06-4.947s-.015-3.667-.072-4.947c-.06-1.277-.261-2.148-.527-2.94-.282-.756-.646-1.422-1.327-2.104-.68-.681-1.35-1.046-2.154-1.327-.792-.266-1.662-.468-2.94-.527C15.667.048 15.26.036 12 .036zm0 2.16c3.203 0 3.585.009 4.849.070 1.171.054 1.805.244 2.227.408.56.217.96.477 1.382.896.419.42.679.822.896 1.381.164.422.354 1.057.408 2.227.061 1.264.07 1.646.07 4.849s-.009 3.585-.07 4.849c-.054 1.171-.244 1.805-.408 2.227-.217.56-.477.96-.896 1.382-.42.419-.822.679-1.381.896-.422.164-1.057.354-2.227.408-1.264.061-1.646.07-4.849.07s-3.585-.009-4.849-.07c-1.171-.054-1.805-.244-2.227-.408-.56-.217-.96-.477-1.382-.896-.419-.42-.679-.822-.896-1.381-.164-.422-.354-1.057-.408-2.227-.061-1.264-.07-1.646-.07-4.849s.009-3.585.07-4.849c.054-1.171.244-1.805.408-2.227.217-.56.477-.96.896-1.382.42-.419.822-.679 1.381-.896.422-.164 1.057-.354 2.227-.408 1.264-.061 1.646-.07 4.849-.07zm0 3.68c-3.405 0-6.162 2.757-6.162 6.162S8.595 18.162 12 18.162s6.162-2.757 6.162-6.162S15.405 5.84 12 5.84zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm4.406-11.845c-.796 0-1.441-.645-1.441-1.44s.645-1.44 1.441-1.44c.795 0 1.44.645 1.44 1.44s-.645 1.44-1.44 1.44z"/>
+                        </svg>
+                    </a>
+                    <a href="https://twitter.com/yourprofile" target="_blank" title="X" style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 50%; background-color: rgba(37, 99, 235, 0.15); border: 2px solid #2563eb; text-decoration: none; transition: all 0.3s ease;">
+                        <svg viewBox="0 0 24 24" fill="currentColor" style="width: 20px; height: 20px; color: #2563eb;">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.657l-5.223-6.818-5.974 6.818h-3.308l7.732-8.835L.424 2.25h6.823l4.721 6.231 5.476-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Bread&Croissant. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
